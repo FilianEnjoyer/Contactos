@@ -1,5 +1,6 @@
 
 using Gestor.Clases;
+using Gestor.Views.Controles;
 using Gestor = Gestor.Clases.ClaseContactos;
 namespace Gestor.Views;
 [QueryProperty(nameof(IDContacto),"ID")]
@@ -17,10 +18,10 @@ public partial class EditarContactosPage : ContentPage
 			contacto = RepositorioContactos.ObtenerContactoConID(int.Parse(value));
             if (contacto != null)
             {
-                EntradaNombre.Text = contacto.Nombre;
-                EntradaTelefono.Text = contacto.Telefono;
-                EntradaCorreo.Text = contacto.Correo;
-                EntradaDireccion.Text = contacto.Direccion;
+                ContactoCntrl.Nombre = contacto.Nombre;
+                ContactoCntrl.Telefono = contacto.Telefono;
+                ContactoCntrl.Correo = contacto.Correo;
+                ContactoCntrl.Direccion = contacto.Direccion;
             }
         }
 	}
@@ -32,28 +33,20 @@ public partial class EditarContactosPage : ContentPage
 
     private void btnActualizar_Clicked(object sender, EventArgs e)
     {
-        if (ValidadorDeNombre.IsNotValid)
-        {
-            DisplayAlert("Error", "Se requiere un nombre", "OK");
-            return;
-        }
-
-        if (ValidadorDeCorreo.IsNotValid)
-        {
-            foreach (var error in ValidadorDeCorreo.Errors)
-            {
-                DisplayAlert("Error", error.ToString(), "Ok");
-            }
-            return;
-        }
 
 
-        contacto.Nombre = EntradaNombre.Text;
-        contacto.Telefono = EntradaTelefono.Text;
-        contacto.Correo = EntradaCorreo.Text;
-        contacto.Direccion = EntradaDireccion.Text;
+
+        contacto.Nombre = ContactoCntrl.Nombre;
+        contacto.Telefono = ContactoCntrl.Telefono;
+        contacto.Correo = ContactoCntrl.Correo;
+        contacto.Direccion = ContactoCntrl.Direccion;
 
         RepositorioContactos.ActualizarContacto(contacto.Id, contacto);
         Shell.Current.GoToAsync("..");
+    }
+
+    private void ContactoCntrl_EnError(object sender, string e)
+    {
+        DisplayAlert("Error", e, "OK");
     }
 }
