@@ -8,6 +8,10 @@
     Shell.FlyoutBehavior="Flyout"
     Title="Gestor">
 
+    <ShellContent 
+    Title="Login" 
+    ContentTemplate="{DataTemplate views:LoginPage}"
+    Route="login"/>
     <ShellContent
         Title="Home"
         ContentTemplate="{DataTemplate views:ContactosPage}"
