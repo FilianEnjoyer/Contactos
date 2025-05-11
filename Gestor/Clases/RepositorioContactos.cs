@@ -43,7 +43,22 @@ namespace Gestor.Clases
                 contactoParaActualizar.Telefono = contacto.Telefono;
                 contactoParaActualizar.Correo = contacto.Correo;
                 contactoParaActualizar.Direccion = contacto.Direccion;
-            }        }
+            }        
+        }
+        public static void AgregarContacto(ClaseContactos contacto)
+        {
+            var IDMaxima = Contactos.Max(x => x.Id);
+            contacto.Id = IDMaxima + 1;
+            Contactos.Add(contacto);
+        }
+        public static void EliminarContacto(int id)
+        {
+            var contacto = Contactos.FirstOrDefault(x => x.Id == id);
+            if (contacto != null)
+            {
+                Contactos.Remove(contacto);
+            }
+        }
 
 
     }

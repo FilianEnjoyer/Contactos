@@ -1,4 +1,5 @@
 using Gestor.Clases;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 namespace Gestor.Views;
 
@@ -13,8 +14,7 @@ public partial class ContactosPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        List<ClaseContactos> contactos = RepositorioContactos.ObtenerContactos();
-        listContacts.ItemsSource = contactos;
+        CargarContactos();
     }
     private async void listContacts_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     { if (listContacts.SelectedItem != null)
@@ -26,5 +26,23 @@ public partial class ContactosPage : ContentPage
     private void listContacts_ItemTapped(object sender, ItemTappedEventArgs e)
     {
         listContacts.SelectedItem = null;
+    }
+
+    private void btnAñadir_Clicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(AñadirContactosPage));
+    }
+    
+    private void Borrar_Pulsado(object sender, EventArgs e)
+    {
+        var menuItem = sender as MenuItem;
+        var contacto = menuItem.CommandParameter as ClaseContactos;
+        RepositorioContactos.EliminarContacto(contacto.Id);
+        CargarContactos();
+    }
+    private void CargarContactos()
+    {
+        var contactos = new ObservableCollection<ClaseContactos>(RepositorioContactos.ObtenerContactos());
+        listContacts.ItemsSource = contactos;
     }
 }
