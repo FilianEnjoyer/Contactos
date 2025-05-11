@@ -1,34 +1,65 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="Gestor.Views.EditarContactosPage"
              Title="Editar Contactos">
     <VerticalStackLayout Spacing="10" Margin="20, 20, 20, 0">
         <Frame Padding="10, 2, 10, 2">
             <HorizontalStackLayout>
                 <Label Text="Nombre" VerticalOptions="Center" WidthRequest="70"></Label>
-                <Entry x:Name="EntradaNombre" VerticalOptions="Center"></Entry>
+                <Entry x:Name="EntradaNombre" VerticalOptions="Center">
+                    <Entry.Behaviors>
+                        <toolkit:TextValidationBehavior
+                            x:Name="ValidadorDeNombre"
+                            Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                            MinimumLength="1"
+                            />
+                    </Entry.Behaviors>
+                </Entry>
             </HorizontalStackLayout>
         </Frame>
 
         <Frame Padding="10, 2, 10, 2">
             <HorizontalStackLayout>
                 <Label Text="Telefono" VerticalOptions="Center" WidthRequest="70"></Label>
-                <Entry x:Name="EntradaTelefono" VerticalOptions="Center"></Entry>
+                <Entry x:Name="EntradaTelefono" VerticalOptions="Center">
+                    
+                </Entry>
             </HorizontalStackLayout>
         </Frame>
 
         <Frame Padding="10, 2, 10, 2">
             <HorizontalStackLayout>
                 <Label Text="Correo" VerticalOptions="Center" WidthRequest="70"></Label>
-                <Entry x:Name="EntradaCorreo" VerticalOptions="Center"></Entry>
+                <Entry x:Name="EntradaCorreo" VerticalOptions="Center">
+                    <Entry.Behaviors>
+                        <toolkit:MultiValidationBehavior
+                            x:Name="ValidadorDeCorreo"
+                            >
+
+                            <toolkit:TextValidationBehavior
+                                Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                                MinimumLength="1"
+                                toolkit:MultiValidationBehavior.Error="Se requiere un correo"
+                                />
+
+                            <toolkit:EmailValidationBehavior 
+                                Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                                toolkit:MultiValidationBehavior.Error="El formato del correo es invalido"
+                                />
+                        </toolkit:MultiValidationBehavior>
+                    </Entry.Behaviors>
+                </Entry>
             </HorizontalStackLayout>
         </Frame>
 
         <Frame Padding="10, 2, 10, 2">
             <HorizontalStackLayout>
                 <Label Text="Direccion" VerticalOptions="Center" WidthRequest="70"></Label>
-                <Entry x:Name="EntradaDireccion" VerticalOptions="Center"></Entry>
+                <Entry x:Name="EntradaDireccion" VerticalOptions="Center">
+                    
+                </Entry>
             </HorizontalStackLayout>
         </Frame>
         <Button x:Name="btnActualizar" Text="Actualizar" Clicked="btnActualizar_Clicked"></Button>

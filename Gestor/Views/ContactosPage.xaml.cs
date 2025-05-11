@@ -7,10 +7,15 @@ public partial class ContactosPage : ContentPage
 	public ContactosPage()
 	{
 		InitializeComponent();
-		List<ClaseContactos> contactos = RepositorioContactos.ObtenerContactos();
-        listContacts.ItemsSource = contactos;
+		
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        List<ClaseContactos> contactos = RepositorioContactos.ObtenerContactos();
+        listContacts.ItemsSource = contactos;
+    }
     private async void listContacts_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     { if (listContacts.SelectedItem != null)
         {
