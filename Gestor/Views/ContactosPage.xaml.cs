@@ -45,4 +45,10 @@ public partial class ContactosPage : ContentPage
         var contactos = new ObservableCollection<ClaseContactos>(RepositorioContactos.ObtenerContactos());
         listContacts.ItemsSource = contactos;
     }
+
+    private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        var contactos = new ObservableCollection<ClaseContactos>(RepositorioContactos.BuscarContactos(((SearchBar)sender).Text));
+        listContacts.ItemsSource = contactos;
+    }
 }

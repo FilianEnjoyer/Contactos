@@ -59,6 +59,23 @@ namespace Gestor.Clases
                 Contactos.Remove(contacto);
             }
         }
+        public static List<ClaseContactos> BuscarContactos(string busqueda)
+        {
+            var contactos = Contactos.Where(x => !string.IsNullOrWhiteSpace (x.Nombre) && x.Nombre.StartsWith(busqueda, StringComparison.OrdinalIgnoreCase))?.ToList();
+            if (contactos == null || contactos.Count <= 0)
+                contactos = Contactos.Where(x => !string.IsNullOrWhiteSpace(x.Correo) && x.Correo.StartsWith(busqueda, StringComparison.OrdinalIgnoreCase))?.ToList();
+            else
+                return contactos;
+            if (contactos == null || contactos.Count <= 0)
+                contactos = Contactos.Where(x => !string.IsNullOrWhiteSpace(x.Telefono) && x.Telefono.StartsWith(busqueda, StringComparison.OrdinalIgnoreCase))?.ToList();
+            else
+                return contactos;
+            if (contactos == null || contactos.Count <= 0)
+                contactos = Contactos.Where(x => !string.IsNullOrWhiteSpace(x.Direccion) && x.Direccion.StartsWith(busqueda, StringComparison.OrdinalIgnoreCase))?.ToList();
+            else
+                return contactos;
+            return contactos;   
+        }
 
 
     }
