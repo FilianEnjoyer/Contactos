@@ -1,3 +1,4 @@
+using Gestor.Clases;
 namespace Gestor.Views;
 
 public partial class LoginPage : ContentPage
@@ -29,9 +30,14 @@ public partial class LoginPage : ContentPage
     
 
     
-    bool IsCredentialCorrect(string username, string password)
+    bool IsCredentialCorrect(string Usuario, string Contraseña)
     {
-        return Usuario.Text == "admin" && Contraseña.Text == "1234";
+        var match = RepositorioUsuarios
+                            .ObtenerUsuarios()
+                            .FirstOrDefault(u =>
+                                string.Equals(u.Nombre, Usuario, StringComparison.OrdinalIgnoreCase)
+                                && u.Contraseña == Contraseña);
+        return match != null;
     }
 
     private  void btnRegistro_Clicked(object sender, EventArgs e)
@@ -41,6 +47,6 @@ public partial class LoginPage : ContentPage
 
     private void btnRecuperar_Clicked(object sender, EventArgs e)
     {
-
+        Shell.Current.GoToAsync(nameof(RecuperarContraseña));
     }
 }

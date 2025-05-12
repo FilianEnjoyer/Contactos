@@ -1,3 +1,4 @@
+using CommunityToolkit.Maui.Behaviors;
 using Gestor.Clases;
 namespace Gestor.Views;
 
@@ -18,20 +19,22 @@ public partial class RegistroPage : ContentPage
         }
         if (ValidadorDeCorreo.IsNotValid)
         {
-            DisplayAlert("Error", "Correo invalido", "OK");
-            return;
-        }
-        if (ValidadorDeCorreo.IsValid && ValidadorDeNombre.IsValid)
-        {
-            RepositorioUsuarios.AgregarUsuario(new Usuarios
+            foreach (var error in ValidadorDeCorreo.Errors)
             {
-                Nombre = EntradaUsuario.Text,
-                Correo = EntradaCorreo.Text,
-                Contraseña = EntradaContraseña.Text
-            });
-
-            Shell.Current.GoToAsync("..");
+                DisplayAlert("Error", error.ToString(), "OK");
+                return;
+            }
         }
+        
+        RepositorioUsuarios.AgregarUsuario(new Usuarios
+        {
+            Nombre = EntradaUsuario.Text,
+            Correo = EntradaCorreo.Text,
+            Contraseña = EntradaContraseña.Text
+        });
+
+        Shell.Current.GoToAsync("..");
+        
         
     }
 

@@ -25,19 +25,20 @@
                 <Entry x:Name="EntradaCorreo" VerticalOptions="Center">
                     <Entry.Behaviors>
                         <toolkit:MultiValidationBehavior
-            x:Name="ValidadorDeCorreo"
-            >
+                            x:Name="ValidadorDeCorreo"
+                            Flags="ValidateOnAttaching,ValidateOnValueChanged"
+                            >
 
                             <toolkit:TextValidationBehavior
-                Flags="ValidateOnAttaching,ValidateOnValueChanged"
-                MinimumLength="1"
-                toolkit:MultiValidationBehavior.Error="Se requiere un correo"
-                />
+                                Flags="ValidateOnAttaching,ValidateOnValueChanged,ValidateOnFocused"    
+                                MinimumLength="1"
+                                toolkit:MultiValidationBehavior.Error="Se requiere un correo"
+                                />  
 
                             <toolkit:EmailValidationBehavior 
-                Flags="ValidateOnAttaching,ValidateOnValueChanged"
-                toolkit:MultiValidationBehavior.Error="El formato del correo es invalido"
-                />
+                                Flags="ValidateOnAttaching,ValidateOnValueChanged,ValidateOnFocused"
+                                toolkit:MultiValidationBehavior.Error="El formato del correo es invalido"
+                                />
                         </toolkit:MultiValidationBehavior>
                     </Entry.Behaviors>
                 </Entry>
@@ -47,7 +48,7 @@
         <Frame Padding="10, 2, 10, 2">
             <HorizontalStackLayout>
                 <Label Text="Contraseña" VerticalOptions="Center" WidthRequest="80"></Label>
-                <Entry x:Name="EntradaContraseña" VerticalOptions="Center">
+                <Entry x:Name="EntradaContraseña" VerticalOptions="Center" IsPassword="True">
 
                 </Entry>
             </HorizontalStackLayout>
