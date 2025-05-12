@@ -12,6 +12,8 @@ namespace Gestor
             Routing.RegisterRoute(nameof(EditarContactosPage), typeof(EditarContactosPage));
 
             Routing.RegisterRoute(nameof(AñadirContactosPage), typeof(AñadirContactosPage));
+
+            Routing.RegisterRoute(nameof(RegistroPage), typeof(RegistroPage));
         }
     }
 }

@@ -26,23 +26,21 @@ public partial class LoginPage : ContentPage
         }
     }
 
-    private void TapGestureRecognizer_Registrarse(object sender, TappedEventArgs e)
-    {
-        Label Reg = (sender as Label);
-        var Msg = Reg.FormattedText.Spans[0].Text;
-        //var customerName = (sender as Label).Text;
-        DisplayAlert("Registrar Usuario", $"Name : {Msg}", "ok");
-    }
+    
 
-    private void TapGestureRecognizer_OlvideContraseña(object sender, TappedEventArgs e)
-    {
-        Label Reg = (sender as Label);
-        var Msg = Reg.FormattedText.Spans[1].Text;
-        //var customerName = (sender as Label).Text;
-        DisplayAlert("Recuperar Password", $"Name : {Msg}", "ok");
-    }
+    
     bool IsCredentialCorrect(string username, string password)
     {
         return Usuario.Text == "admin" && Contraseña.Text == "1234";
+    }
+
+    private  void btnRegistro_Clicked(object sender, EventArgs e)
+    {
+         Shell.Current.GoToAsync(nameof(RegistroPage));
+    }
+
+    private void btnRecuperar_Clicked(object sender, EventArgs e)
+    {
+
     }
 }
