@@ -13,7 +13,7 @@ public partial class SettingsPage : ContentPage
         {
             Preferences.Remove("UsuarioActual");
             SecureStorage.RemoveAll();
-            await Shell.Current.GoToAsync(nameof(LoginPage));
+            await Shell.Current.GoToAsync("//login", true);
         }
     }
 }

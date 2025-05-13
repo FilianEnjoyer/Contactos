@@ -14,7 +14,7 @@
     Route="loading" />
     
     <ShellContent 
-    Title="Login" 
+    Title="Login"
     ContentTemplate="{DataTemplate views:LoginPage}"
     Route="login"/>
 

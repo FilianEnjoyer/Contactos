@@ -40,7 +40,7 @@ public partial class RegistroPage : ContentPage
 
     private void btnCancelar_Clicked(object sender, EventArgs e)
     {
-
+        Shell.Current.GoToAsync("..");
     }
     
 }

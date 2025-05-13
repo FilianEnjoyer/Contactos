@@ -23,7 +23,7 @@ public partial class LoginPage : ContentPage
         else
         {
             Preferences.Remove("UsuarioActual");
-            await DisplayAlert("Login failed", "Username or password if invalid", "Try again");
+            await DisplayAlert("Login failed", "Username or password is invalid", "Try again");
         }
     }
 
