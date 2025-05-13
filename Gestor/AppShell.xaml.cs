@@ -16,6 +16,10 @@ namespace Gestor
             Routing.RegisterRoute(nameof(RegistroPage), typeof(RegistroPage));
 
             Routing.RegisterRoute(nameof(RecuperarContraseña), typeof(RecuperarContraseña));
+
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
+
+            Routing.RegisterRoute(nameof(LoginPage), typeof(LoginPage));
         }
     }
 }

@@ -8,13 +8,36 @@
     Shell.FlyoutBehavior="Flyout"
     Title="Gestor">
 
+    <ShellContent
+    Title="Home"
+    ContentTemplate="{DataTemplate views:LoadingPage}"
+    Route="loading" />
+    
     <ShellContent 
     Title="Login" 
     ContentTemplate="{DataTemplate views:LoginPage}"
     Route="login"/>
-    <ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate views:ContactosPage}"
-        Route="ContactosPage" />
+
+    <TabBar>
+
+        <Tab Title="Contactos" Icon="house_door_fill.svg">
+
+          <ShellContent
+            Title="Contactos"
+            ContentTemplate="{DataTemplate views:ContactosPage}"
+            Route="ContactosPage" />
+        </Tab>
+
+        <Tab Title="Settings" Icon="gear_fill.svg">
+          <ShellContent
+            Icon="house_door_fill.svg"
+            Title="Settings"
+            ContentTemplate="{DataTemplate views:SettingsPage}"
+            Route="settings" />
+        </Tab>
+
+    </TabBar>
+
+    
 
 </Shell>
