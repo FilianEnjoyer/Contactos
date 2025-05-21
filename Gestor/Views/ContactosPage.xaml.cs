@@ -5,21 +5,34 @@ namespace Gestor.Views;
 
 public partial class ContactosPage : ContentPage
 {
-	public ContactosPage()
+    private readonly ContactoDatabase _database;
+    public ContactosPage()
 	{
 		InitializeComponent();
-		
+        _database = new ContactoDatabase();
     }
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        CargarContactos();
+        await CargarContactosAsync();
+    }
+
+    private async Task CargarContactosAsync()
+    {
+        // Obtener todos los contactos de SQLite
+        var lista = await _database.ObtenerContactosAsync();
+        var contactos = new ObservableCollection<ClaseContactos>(lista);
+        listContacts.ItemsSource = contactos;
     }
     private async void listContacts_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    { if (listContacts.SelectedItem != null)
+    {
+        if (e.SelectedItem is ClaseContactos contacto)
         {
-            await Shell.Current.GoToAsync($"{nameof(EditarContactosPage)}?ID={((ClaseContactos)listContacts.SelectedItem).Id}");
+            // Navegar a la página de edición pasando el ID
+            await Shell.Current.GoToAsync(
+                $"{nameof(EditarContactosPage)}?ID={contacto.Id}"
+            );
         }
     }
 
@@ -28,27 +41,37 @@ public partial class ContactosPage : ContentPage
         listContacts.SelectedItem = null;
     }
 
-    private void btnAñadir_Clicked(object sender, EventArgs e)
+    private async void btnAñadir_Clicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(AñadirContactosPage));
+        await Shell.Current.GoToAsync(nameof(AñadirContactosPage));
     }
     
-    private void Borrar_Pulsado(object sender, EventArgs e)
+    private async void Borrar_Pulsado(object sender, EventArgs e)
     {
         var menuItem = sender as MenuItem;
-        var contacto = menuItem.CommandParameter as ClaseContactos;
-        RepositorioContactos.EliminarContacto(contacto.Id);
-        CargarContactos();
+        if (menuItem?.CommandParameter is ClaseContactos contacto)
+        {
+            // Eliminar del DB y recargar
+            await _database.EliminarContactoAsync(contacto);
+            await CargarContactosAsync();
+        }
     }
-    private void CargarContactos()
-    {
-        var contactos = new ObservableCollection<ClaseContactos>(RepositorioContactos.ObtenerContactos());
-        listContacts.ItemsSource = contactos;
-    }
+    
 
-    private void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var contactos = new ObservableCollection<ClaseContactos>(RepositorioContactos.BuscarContactos(((SearchBar)sender).Text));
-        listContacts.ItemsSource = contactos;
+        var texto = e.NewTextValue?.Trim() ?? "";
+
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            // Si la barra está vacía, recarga todos los contactos
+            await CargarContactosAsync();
+        }
+        else
+        {
+            // Llama al método que busca en SQLite sin distinguir mayúsculas/minúsculas
+            var resultados = await _database.BuscarContactosAsync(texto);
+            listContacts.ItemsSource = new ObservableCollection<ClaseContactos>(resultados);
+        }
     }
 }

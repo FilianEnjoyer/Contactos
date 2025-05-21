@@ -3,10 +3,12 @@ namespace Gestor.Views;
 
 public partial class LoginPage : ContentPage
 {
-	public LoginPage()
+    private readonly UsuarioDatabase _database;
+    public LoginPage()
 	{
 		InitializeComponent();
-	}
+        _database = new UsuarioDatabase();
+    }
     protected override bool OnBackButtonPressed()
     {
         Application.Current.Quit();
@@ -14,7 +16,8 @@ public partial class LoginPage : ContentPage
     }
     private async void BotonLogin_Clicked(object sender, EventArgs e)
     {
-        if (IsCredentialCorrect(Usuario.Text, Contraseña.Text))
+        // Ahora llamamos a la versión asíncrona de validación
+        if (await IsCredentialCorrectAsync(Usuario.Text, Contraseña.Text))
         {
             Preferences.Set("UsuarioActual", Usuario.Text.Trim());
             await SecureStorage.SetAsync("hasAuth", "true");
@@ -23,30 +26,29 @@ public partial class LoginPage : ContentPage
         else
         {
             Preferences.Remove("UsuarioActual");
-            await DisplayAlert("Login failed", "Username or password is invalid", "Try again");
+            await DisplayAlert("Inicio de sesion fallido",
+                               "Usuario o contraseña invalidos",
+                               "Intentalo de nuevo");
         }
     }
 
-    
-
-    
-    bool IsCredentialCorrect(string Usuario, string Contraseña)
+    private async Task<bool> IsCredentialCorrectAsync(string nombre, string contraseña)
     {
-        var match = RepositorioUsuarios
-                            .ObtenerUsuarios()
-                            .FirstOrDefault(u =>
-                                string.Equals(u.Nombre, Usuario, StringComparison.OrdinalIgnoreCase)
-                                && u.Contraseña == Contraseña);
+        var lista = await _database.ObtenerUsuariosAsync();
+        var match = lista.FirstOrDefault(u =>
+            string.Equals(u.Nombre, nombre?.Trim(), StringComparison.OrdinalIgnoreCase) &&
+            u.Contraseña == contraseña);
+
         return match != null;
     }
 
-    private  void btnRegistro_Clicked(object sender, EventArgs e)
+    private async  void btnRegistro_Clicked(object sender, EventArgs e)
     {
-         Shell.Current.GoToAsync(nameof(RegistroPage));
+        await Shell.Current.GoToAsync(nameof(RegistroPage));
     }
 
-    private void btnRecuperar_Clicked(object sender, EventArgs e)
+    private async void btnRecuperar_Clicked(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(RecuperarContraseña));
+        await Shell.Current.GoToAsync(nameof(RecuperarContraseña));
     }
 }
